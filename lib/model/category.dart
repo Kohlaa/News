@@ -51,6 +51,6 @@ class Category1 {
     ];
   }
 }
-git remote add origin git@github.com:Kohlaa/tatatatt.git
-git branch -M main
-git push -u origin main
+// git remote add origin git@github.com:Kohlaa/tatatatt.git
+// git branch -M main
+// git push -u origin main
