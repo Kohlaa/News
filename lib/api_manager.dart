@@ -23,9 +23,13 @@ class ApiManager {
   }
 
   //https://newsapi.org/v2/everything?q=apple&from=2022-12-25&to=2022-12-25&sortBy=popularity&apiKey=2737c0b010Future<NFuture<NewsResponse>59d54c8457
-  static Future<NewsResponse> getNews(String sourceId) async {
-    var url = Uri.https(baseUrl, '/v2/everything',
-        {'apiKey': '2737c0b010ee4166aae4e359d54c8457', 'sources': sourceId});
+  static Future<NewsResponse> getNews(
+      {String? sourceId, String? searchKeyword}) async {
+    var url = Uri.https(baseUrl, '/v2/everything', {
+      'apiKey': '2737c0b010ee4166aae4e359d54c8457',
+      'sources': sourceId,
+      'q': searchKeyword
+    });
     try {
       var response = await http.get(url);
       var bodyString = response.body;

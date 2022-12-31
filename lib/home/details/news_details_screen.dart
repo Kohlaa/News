@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:news_application/home/details/news_details_screen.dart';
-import 'package:news_application/myTheme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-import '../model/NewsResponse.dart';
+import '../../model/NewsResponse.dart';
+import '../../myTheme.dart';
 
-class NewsItem extends StatelessWidget {
-  News news;
-
-  NewsItem({required this.news});
+class NewsDetailsScreen extends StatelessWidget {
+  static const routeName = 'news_details';
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.of(context)
-          .pushNamed(NewsDetailsScreen.routeName, arguments: news),
-      child: Container(
+    var news = ModalRoute.of(context)!.settings.arguments as News;
+    return Scaffold(
+      appBar: AppBar(),
+      body: Container(
         // padding: EdgeInsets.all(12),
         // margin: EdgeInsets.symmetric(vertical: 12),
         child: Column(
@@ -54,9 +52,40 @@ class NewsItem extends StatelessWidget {
               ),
               textAlign: TextAlign.end,
             ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              news.description ?? '',
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                    onPressed: () {
+                      openUrl(news.url);
+                    },
+                    icon: Text('View Full Article',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500)),
+                    label: Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.black,
+                      size: 16,
+                    ))
+              ],
+            )
           ],
         ),
       ),
     );
+  }
+
+  void openUrl(String? url) async {
+    if (url == null) return;
+    var uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) await launchUrl(uri);
   }
 }

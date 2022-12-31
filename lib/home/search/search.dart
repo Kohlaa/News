@@ -1,25 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:news_application/api_manager.dart';
-import 'package:news_application/home/newsItem.dart';
-import 'package:news_application/model/NewsResponse.dart';
-import 'package:news_application/model/SourcesResponse.dart';
-import 'package:news_application/myTheme.dart';
 
-class NewsContainer extends StatelessWidget {
-  Source source;
+import '../../api_manager.dart';
+import '../../model/NewsResponse.dart';
+import '../../myTheme.dart';
+import '../newsItem.dart';
 
-  NewsContainer({required this.source});
+class NewsSearch extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+          onPressed: () {
+            showResults(context);
+          },
+          icon: Icon(
+            Icons.search,
+            size: 25,
+          ))
+    ];
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        icon: Icon(
+          Icons.clear,
+          size: 25,
+        ));
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
     return FutureBuilder<NewsResponse>(
-        future: ApiManager.getNews(sourceId: source.id ?? ''),
+        future: ApiManager.getNews(searchKeyword:query),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
                 child: CircularProgressIndicator(
-              color: MyTheme.primaryLightColor,
-            ));
+                  color: MyTheme.primaryLightColor,
+                ));
           } else if (snapshot.hasError) {
             return Column(
               children: [
@@ -44,5 +66,10 @@ class NewsContainer extends StatelessWidget {
             itemCount: newsList.length,
           );
         });
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Center(child: Text('Suggestions'));
   }
 }

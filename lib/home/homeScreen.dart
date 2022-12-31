@@ -4,6 +4,7 @@ import 'package:news_application/home/category/categoryFragment.dart';
 
 import 'package:news_application/home/category/category_details.dart';
 import 'package:news_application/home/home_settings/setting_tab.dart';
+import 'package:news_application/home/search/search.dart';
 
 import '../model/category.dart';
 import '../myTheme.dart';
@@ -36,6 +37,16 @@ class _homeScreenState extends State<homeScreen> {
                   bottomRight: Radius.circular(35))),
           title: Text('News App', style: Theme.of(context).textTheme.headline1),
           centerTitle: true,
+          actions: [
+            IconButton(
+                onPressed: () {
+                   showSearch(context: context, delegate: NewsSearch());
+                },
+                icon: Icon(
+                  Icons.search,
+                  size: 32,
+                ))
+          ],
         ),
         drawer: Drawer(
           child: homeDrawer(onDrawerItemClicked: onDrawerItemClicked),
